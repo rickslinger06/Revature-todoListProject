@@ -17,14 +17,6 @@ public class UserContoller {
 
     private final UserService userService;
 
-    @PostMapping("/register")
-    public ResponseEntity<UserDTO> register(@Valid @RequestBody RegisterRequest registerRequest) {
 
-        UserDTO createdUser = userService.registerUser(registerRequest);
-
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(createdUser);
-    }
 
 }
