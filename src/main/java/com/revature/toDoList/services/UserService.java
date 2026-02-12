@@ -11,6 +11,5 @@ public interface UserService {
 
     UserDTO getUserByUsername(String username);
     boolean existByUsername(String username);
-
-
+    void makeUserAdmin(String userId);
 }

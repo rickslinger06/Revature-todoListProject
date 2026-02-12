@@ -1,5 +1,6 @@
 package com.revature.toDoList.dto;
 
+import lombok.Builder;
 import lombok.Data;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -7,6 +8,7 @@ import javax.validation.constraints.NotBlank;
 import java.util.UUID;
 
 @Data
+@Builder
 public class UserDTO {
 
     private String userId;

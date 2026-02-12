@@ -1,14 +1,18 @@
 package com.revature.toDoList.controller;
 
 import com.revature.toDoList.auth.JwtService;
-import com.revature.toDoList.dto.RegisterRequest;
-import com.revature.toDoList.dto.UserDTO;
+import com.revature.toDoList.dto.*;
+import com.revature.toDoList.entity.User;
 import com.revature.toDoList.repository.UserRepository;
 import com.revature.toDoList.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,5 +41,22 @@ public class AuthController {
                 .status(HttpStatus.CREATED)
                 .body(createdUser);
     }
+
+    @PostMapping("/authenticate")
+    public ResponseEntity<AuthResponse> authenticate(@Valid @RequestBody AuthRequest req){
+
+        Authentication auth = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(req.getUsername(), req.getPassword())
+        );
+
+        UserDetails principal = (UserDetails) auth.getPrincipal();
+
+        UserDTO dto = userService.getUserByUsername(principal.getUsername());
+
+        String token = jwtService.generateToken(UserMapper.toEntity(dto));
+
+        return ResponseEntity.ok(new AuthResponse(token, ""));
+    }
+
 
 }

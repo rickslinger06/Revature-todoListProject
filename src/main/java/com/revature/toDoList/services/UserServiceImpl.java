@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setUsername(rr.getUsername());
         user.setEmail(rr.getEmail());
-        user.setRole(rr.getRole());
+        user.setRole("USER");
         user.setPassword(passwordEncoder.encode(rr.getPassword()));
 
         User savedUser = userRepository.save(user);
@@ -50,7 +50,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getUserByUsername(String username) {
-        return null;
+        User user = userRepository.findByUsername(username).orElseThrow(
+                () -> new UserNotFoundFoundException("User not found"));
+
+        return UserMapper.toDTO(user);
     }
 
     @Override
@@ -61,4 +64,15 @@ public class UserServiceImpl implements UserService {
         }
         return false;
     }
+
+    @Override
+    public void makeUserAdmin(String userId) {
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new UserNotFoundFoundException("User does not exists")
+        );
+        user.setRole("ADMIN");
+        userRepository.save(user);
+    }
+
+
 }
