@@ -19,10 +19,3 @@ spring:
       hibernate:
         format_sql: true
     database-platform: org.hibernate.dialect.MySQLDialect
-
-jwt:
-  secret: ${JWT_SECRET}
-  expirationMs: 3600000  # 1 hour
-  issuer: "https://api.todolist.com"
-  audience: "todo-api"
-
