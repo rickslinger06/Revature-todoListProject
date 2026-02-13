@@ -1,4 +1,4 @@
-package com.revature.toDoList.dto;
+package com.revature.toDoList.dto.request;
 
 import lombok.Data;
 

@@ -1,8 +1,8 @@
 package com.revature.toDoList.services;
 
-import com.revature.toDoList.dto.RegisterRequest;
+import com.revature.toDoList.dto.request.RegisterRequest;
 import com.revature.toDoList.dto.UserDTO;
-import com.revature.toDoList.dto.UserMapper;
+import com.revature.toDoList.dto.mapper.UserMapper;
 import com.revature.toDoList.entity.User;
 import com.revature.toDoList.exception.UserExistsException;
 import com.revature.toDoList.exception.UserNotFoundFoundException;
@@ -10,8 +10,6 @@ import com.revature.toDoList.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 
 @Service

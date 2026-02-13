@@ -8,7 +8,6 @@ import javax.validation.constraints.NotBlank;
 import java.util.UUID;
 
 @Data
-@Builder
 public class UserDTO {
 
     private String userId;

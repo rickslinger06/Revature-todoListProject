@@ -1,4 +1,4 @@
-package com.revature.toDoList.dto;
+package com.revature.toDoList.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

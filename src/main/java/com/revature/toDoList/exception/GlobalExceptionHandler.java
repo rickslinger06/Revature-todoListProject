@@ -1,6 +1,6 @@
 package com.revature.toDoList.exception;
 
-import com.revature.toDoList.dto.ErrorResponse;
+import com.revature.toDoList.dto.response.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +37,18 @@ public class GlobalExceptionHandler {
 
     }
 
+    @ExceptionHandler(UserAuthenticationException.class)
+    public ResponseEntity<ErrorResponse> handleUserAuth(UserAuthenticationException ex, HttpServletRequest req){
+
+        ErrorResponse error = new ErrorResponse();
+        error.setLocalDateTime(LocalDateTime.now());
+        error.setMessage(ex.getMessage());
+        error.setPath(req.getRequestURI());
+
+        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGeneric(
             Exception ex,
@@ -48,4 +60,5 @@ public class GlobalExceptionHandler {
         error.setPath(req.getRequestURI());
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 }

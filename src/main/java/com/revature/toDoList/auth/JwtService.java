@@ -30,11 +30,21 @@ public class JwtService {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + expiration);
 
+
+        String role = user.getRole();
+        if (role == null || role.isBlank()) {
+            role = "USER";
+        }
+        if (!role.startsWith("ROLE_")) {
+            role = "ROLE_" + role;
+        }
+
+
         return Jwts.builder()
                 .setSubject(user.getUserId())
                 .setIssuedAt(now)
                 .setExpiration(expiry)
-                .claim("role",user.getRole())
+                .claim("role",role)
                 .claim("username",user.getUsername())
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
