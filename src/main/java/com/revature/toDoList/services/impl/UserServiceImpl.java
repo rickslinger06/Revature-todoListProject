@@ -9,8 +9,11 @@ import com.revature.toDoList.exception.UserNotFoundFoundException;
 import com.revature.toDoList.repository.UserRepository;
 import com.revature.toDoList.services.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service
@@ -71,6 +74,18 @@ public class UserServiceImpl implements UserService {
         );
         user.setRole("ADMIN");
         userRepository.save(user);
+    }
+
+    @Override
+    public List<UserDTO> findAllUsers() {
+
+        List<User> users = userRepository.findAll();
+
+        if(users.isEmpty()){
+            throw new UsernameNotFoundException("No users found");
+        }
+        return users.stream().map(UserMapper::toDTO).toList();
+
     }
 
 
