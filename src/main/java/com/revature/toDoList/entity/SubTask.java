@@ -20,10 +20,11 @@ public class SubTask {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long subTaskId;
     @Column(nullable = false)
-    private String Description;
+    private String description;
     @Column(nullable = false)
-    private boolean completed;
+    private Boolean completed;
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     @ManyToOne
     @JoinColumn(name="todo_id")
     private TodoItem todoItem;

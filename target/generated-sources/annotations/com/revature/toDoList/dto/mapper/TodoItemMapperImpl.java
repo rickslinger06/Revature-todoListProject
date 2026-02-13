@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-02-13T08:15:51-0600",
+    date = "2026-02-13T12:58:41-0600",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 21.0.10 (Microsoft)"
 )
 @Component
@@ -24,6 +24,7 @@ public class TodoItemMapperImpl implements TodoItemMapper {
         }
 
         String userId = null;
+        long todoId = 0L;
         String title = null;
         String description = null;
         LocalDate dueDate = null;
@@ -32,6 +33,7 @@ public class TodoItemMapperImpl implements TodoItemMapper {
         LocalDateTime updatedAt = null;
 
         userId = todoItemUserUserId( todoItem );
+        todoId = todoItem.getTodoId();
         title = todoItem.getTitle();
         description = todoItem.getDescription();
         dueDate = todoItem.getDueDate();
@@ -39,7 +41,7 @@ public class TodoItemMapperImpl implements TodoItemMapper {
         createdAt = todoItem.getCreatedAt();
         updatedAt = todoItem.getUpdatedAt();
 
-        TodoItemResponse todoItemResponse = new TodoItemResponse( title, description, dueDate, completed, createdAt, updatedAt, userId );
+        TodoItemResponse todoItemResponse = new TodoItemResponse( todoId, title, description, dueDate, completed, createdAt, updatedAt, userId );
 
         return todoItemResponse;
     }
@@ -55,7 +57,6 @@ public class TodoItemMapperImpl implements TodoItemMapper {
         todoItem.setTitle( request.title() );
         todoItem.setDescription( request.description() );
         todoItem.setDueDate( request.dueDate() );
-        todoItem.setCompleted( request.completed() );
         todoItem.setUpdatedAt( request.updatedAt() );
 
         return todoItem;

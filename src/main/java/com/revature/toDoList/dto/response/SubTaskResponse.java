@@ -1,4 +1,12 @@
 package com.revature.toDoList.dto.response;
 
-public record SubTaskResponse() {
+import java.time.LocalDateTime;
+
+public record SubTaskResponse(
+        long subTaskId,
+        String description,
+        Boolean completed,
+        LocalDateTime updatedAt,
+        long todoId
+) {
 }

@@ -15,6 +15,7 @@ import com.revature.toDoList.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,14 +33,14 @@ public class TodoItemServiceImpl implements TodoItemService {
     public TodoItemResponse createToDoItem(TodoItemCreateRequest todoItem) {
 
         String username = SecurityUtils.getCurrentUsername();
-        log.info("current user {}",username);
+        log.info("current user {}", username);
 
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundFoundException("User not found"));
 
 
         TodoItem entity = mapper.toEntity(todoItem);
-        entity.setCompleted(false);
+        entity.setCompleted(Boolean.TRUE.equals(todoItem.completed()));
         entity.setUser(user);
 
         TodoItem saved = todoItemRepository.save(entity);
@@ -51,8 +52,8 @@ public class TodoItemServiceImpl implements TodoItemService {
     @Override
     public List<TodoItemResponse> getToDoItemByUserId(String userId) {
 
-       List<TodoItem> todoList = todoItemRepository.findByUser_UserId(userId).orElseThrow(
-               () -> new ToDoListItemNotFoundException("No To Do List found "));
+        List<TodoItem> todoList = todoItemRepository.findByUser_UserId(userId).orElseThrow(
+                () -> new ToDoListItemNotFoundException("No To Do List found "));
 
         return todoList.stream()
                 .map(mapper::toResponse)
@@ -62,8 +63,8 @@ public class TodoItemServiceImpl implements TodoItemService {
     @Override
     public TodoItemResponse getByTodoId(long todoId) {
 
-            TodoItem item = todoItemRepository.findById(todoId).orElseThrow(
-                    () -> new TodoIdNotFoundException("to do id not found"));
+        TodoItem item = todoItemRepository.findById(todoId).orElseThrow(
+                () -> new TodoIdNotFoundException("to do id not found"));
 
         return mapper.toResponse(item);
     }

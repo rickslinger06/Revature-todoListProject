@@ -1,6 +1,12 @@
 package com.revature.toDoList.dto.request;
 
+import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
+
 public record SubTaskCreateRequest(
-        String Description,
+
+        @NotBlank(message = "Description is required")
+        String description,
         Boolean completed
+
 ) {}

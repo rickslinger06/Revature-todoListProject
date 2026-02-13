@@ -9,6 +9,7 @@ import java.util.List;
 
 public record TodoItemResponse(
 
+        long todoId,
         String title,
 
         String description,

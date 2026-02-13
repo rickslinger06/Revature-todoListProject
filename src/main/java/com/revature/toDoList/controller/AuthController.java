@@ -7,7 +7,9 @@ import com.revature.toDoList.dto.request.AuthRequest;
 import com.revature.toDoList.dto.request.RegisterRequest;
 import com.revature.toDoList.dto.response.AuthResponse;
 import com.revature.toDoList.services.UserService;
+import com.revature.toDoList.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,6 +27,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
+@Slf4j
 public class AuthController {
 
     private final PasswordEncoder passwordEncoder;
@@ -56,6 +59,7 @@ public class AuthController {
 
         String token = jwtService.generateToken(UserMapper.toEntity(dto));
 
+        log.info("username={} Successfully Authenticated", jwtService.extractUsername(token));
         return ResponseEntity.ok(new AuthResponse(token, ""));
     }
 
