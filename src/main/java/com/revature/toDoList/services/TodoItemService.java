@@ -12,6 +12,7 @@ public interface TodoItemService {
     List<TodoItemResponse> getToDoItemByUserId(String userId);
     TodoItemResponse getByTodoId(long todoId);
 
-    void updateTodoItem(long todoId);
+    TodoItemResponse updateTodoItem(TodoItemCreateRequest req);
+    void deleteToDoItem(long todoId);
 
 }

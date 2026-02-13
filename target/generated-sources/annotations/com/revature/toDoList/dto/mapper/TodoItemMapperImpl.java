@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-02-12T21:54:52-0600",
-    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 21.0.10 (Oracle Corporation)"
+    date = "2026-02-13T08:15:51-0600",
+    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 21.0.10 (Microsoft)"
 )
 @Component
 public class TodoItemMapperImpl implements TodoItemMapper {
@@ -29,6 +29,7 @@ public class TodoItemMapperImpl implements TodoItemMapper {
         LocalDate dueDate = null;
         boolean completed = false;
         LocalDateTime createdAt = null;
+        LocalDateTime updatedAt = null;
 
         userId = todoItemUserUserId( todoItem );
         title = todoItem.getTitle();
@@ -36,8 +37,9 @@ public class TodoItemMapperImpl implements TodoItemMapper {
         dueDate = todoItem.getDueDate();
         completed = todoItem.isCompleted();
         createdAt = todoItem.getCreatedAt();
+        updatedAt = todoItem.getUpdatedAt();
 
-        TodoItemResponse todoItemResponse = new TodoItemResponse( title, description, dueDate, completed, createdAt, userId );
+        TodoItemResponse todoItemResponse = new TodoItemResponse( title, description, dueDate, completed, createdAt, updatedAt, userId );
 
         return todoItemResponse;
     }
@@ -53,6 +55,8 @@ public class TodoItemMapperImpl implements TodoItemMapper {
         todoItem.setTitle( request.title() );
         todoItem.setDescription( request.description() );
         todoItem.setDueDate( request.dueDate() );
+        todoItem.setCompleted( request.completed() );
+        todoItem.setUpdatedAt( request.updatedAt() );
 
         return todoItem;
     }

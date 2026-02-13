@@ -49,6 +49,18 @@ public class GlobalExceptionHandler {
 
     }
 
+    @ExceptionHandler(InvalidTokenException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidTokenException(
+            InvalidTokenException ex,
+            HttpServletRequest req) {
+
+        ErrorResponse error = new ErrorResponse();
+        error.setLocalDateTime(LocalDateTime.now());
+        error.setMessage(ex.getMessage());
+        error.setPath(req.getRequestURI());
+        return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGeneric(
             Exception ex,

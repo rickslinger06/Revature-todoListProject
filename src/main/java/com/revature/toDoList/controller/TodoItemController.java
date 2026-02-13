@@ -45,7 +45,22 @@ public class TodoItemController {
        TodoItemResponse item = todoItemService.getByTodoId(todoId);
         return ResponseEntity.status(HttpStatus.OK).body(item);
 
+    }
 
+    @PutMapping("/user/item/update")
+    public ResponseEntity<String> updateToDoItem(@Valid @RequestBody  TodoItemCreateRequest request){
+        todoItemService.updateTodoItem(request);
+        String message = "Successfully updated item " + request.title();
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(message);
+    }
+
+    @DeleteMapping("/user/item/delete/{todoId}")
+    public ResponseEntity<String> deleteToDoItem(@PathVariable long todoId){
+        todoItemService.deleteToDoItem(todoId);
+        String message = "Successfully deleted item " + todoId;
+
+        return ResponseEntity.status(HttpStatus.OK).body(message);
     }
 
 

@@ -2,6 +2,7 @@ package com.revature.toDoList.auth;
 
 import com.revature.toDoList.config.JwtConfig;
 import com.revature.toDoList.entity.User;
+import com.revature.toDoList.exception.InvalidTokenException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
@@ -63,13 +64,20 @@ public class JwtService {
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
-        try {
-            String username = extractUsername(token);
-            return username.equals(userDetails.getUsername()) && !isExpired(token);
-        } catch (JwtException | IllegalArgumentException e) {
-            return false;
+
+        String username = extractUsername(token);
+
+        if (!username.equals(userDetails.getUsername())) {
+            throw new InvalidTokenException("Token username does not match user");
         }
+
+        if (isExpired(token)) {
+            throw new InvalidTokenException("Token is expired");
+        }
+
+        return true;
     }
+
 
     private Jws<Claims> parseClaims(String token){
         return Jwts.parserBuilder()

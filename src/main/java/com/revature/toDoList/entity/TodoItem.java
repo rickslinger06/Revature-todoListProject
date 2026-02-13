@@ -33,6 +33,8 @@ public class TodoItem {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
+    private LocalDateTime updatedAt;
+
     @OneToMany(mappedBy = "todoItem", cascade = CascadeType.ALL)
     private List<SubTask> subTask = new ArrayList<>();
 

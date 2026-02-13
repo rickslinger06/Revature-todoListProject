@@ -1,4 +1,4 @@
-package com.revature.toDoList.services;
+package com.revature.toDoList.services.impl;
 
 import com.revature.toDoList.dto.mapper.TodoItemMapper;
 import com.revature.toDoList.dto.request.TodoItemCreateRequest;
@@ -10,10 +10,13 @@ import com.revature.toDoList.exception.TodoIdNotFoundException;
 import com.revature.toDoList.exception.UserNotFoundFoundException;
 import com.revature.toDoList.repository.TodoItemRepository;
 import com.revature.toDoList.repository.UserRepository;
+import com.revature.toDoList.services.TodoItemService;
 import com.revature.toDoList.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,8 +69,31 @@ public class TodoItemServiceImpl implements TodoItemService {
     }
 
     @Override
-    public void updateTodoItem(long todoId) {
+    public TodoItemResponse updateTodoItem(TodoItemCreateRequest req) {
 
+        TodoItem item = todoItemRepository.findById(req.todoId()).orElseThrow(
+                () -> new TodoIdNotFoundException("No to do item found"));
+
+        log.info("TO ID FOUND" + req.todoId());
+
+        item.setTitle(req.title());
+        item.setCompleted(req.completed());
+        item.setDescription(req.description());
+        item.setUpdatedAt(LocalDateTime.now());
+        item.setDueDate(req.dueDate());
+
+        log.info("UPDATED ITEM" + item.getDueDate());
+        todoItemRepository.save(item);
+
+        return mapper.toResponse(item);
+    }
+
+    @Override
+    public void deleteToDoItem(long todoId) {
+        TodoItem item = todoItemRepository.findById(todoId).orElseThrow(
+                () -> new TodoIdNotFoundException("No to do item found"));
+
+        todoItemRepository.delete(item);
     }
 
 }
