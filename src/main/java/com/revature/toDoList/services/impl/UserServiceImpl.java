@@ -9,6 +9,8 @@ import com.revature.toDoList.exception.UserNotFoundFoundException;
 import com.revature.toDoList.repository.UserRepository;
 import com.revature.toDoList.services.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -77,16 +79,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDTO> findAllUsers() {
+    public Page<UserDTO> findAllUsers(Pageable pageable) {
 
-        List<User> users = userRepository.findAll();
+        Page<User> users = userRepository.findAll(pageable);
 
-        if(users.isEmpty()){
+        if (users.isEmpty()) {
             throw new UsernameNotFoundException("No users found");
         }
-        return users.stream().map(UserMapper::toDTO).toList();
-
+        return users.map(UserMapper::toDTO);
     }
-
 
 }
