@@ -36,9 +36,9 @@ public class SubTaskController {
     }
 
     @GetMapping("/user/task/{subId}")
-    public ResponseEntity<SubTaskResponse> getSubTaskById(@PathVariable long id) {
+    public ResponseEntity<SubTaskResponse> getSubTaskById(@PathVariable long subId) {
 
-        SubTaskResponse task = subtaskService.getBySubTaskId(id);
+        SubTaskResponse task = subtaskService.getBySubTaskId(subId);
 
         return ResponseEntity.status(HttpStatus.OK).body(task);
 
