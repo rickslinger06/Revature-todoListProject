@@ -11,3 +11,10 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+
+jwt:
+  secret: "this-is-a-test-secret-key-that-is-32-bytes+"
+  expirationMs: 3600000  # 1 hour
+  issuer: "localhost"
+  audience: "todo-api"

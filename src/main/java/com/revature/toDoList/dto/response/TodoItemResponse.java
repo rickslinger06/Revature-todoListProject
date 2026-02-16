@@ -17,7 +17,8 @@ public record TodoItemResponse(
         LocalDate dueDate,
         boolean completed,
         LocalDateTime createdAt,
-       LocalDateTime updatedAt,
+        LocalDateTime updatedAt,
         String userId
 
-) { }
+) {
+}
