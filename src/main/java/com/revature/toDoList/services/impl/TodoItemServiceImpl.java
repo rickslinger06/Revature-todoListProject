@@ -128,7 +128,6 @@ public class TodoItemServiceImpl implements TodoItemService {
         item.setClosed(false);
         item.setUpdatedAt(LocalDateTime.now());
         log.info("Reopened itemId= {}", todoId);
-        .
 
         return mapper.toResponse(todoItemRepository.save(item));
     }

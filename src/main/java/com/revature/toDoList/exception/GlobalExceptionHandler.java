@@ -63,7 +63,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(SubTaskNotClosedException.class)
     public ResponseEntity<ErrorResponse> handleSubTaskNotCompletedException(
-            InvalidTokenException ex,
+            SubTaskNotClosedException ex,
             HttpServletRequest req) {
 
         ErrorResponse error = new ErrorResponse();

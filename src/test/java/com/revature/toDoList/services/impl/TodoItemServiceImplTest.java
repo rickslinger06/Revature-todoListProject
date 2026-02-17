@@ -48,7 +48,6 @@ class TodoItemServiceImplTest {
                 "Implement JWT authentication and authorization",
                 LocalDate.now().plusDays(2),
                 false,
-                false,
                 LocalDateTime.now()
         );
 

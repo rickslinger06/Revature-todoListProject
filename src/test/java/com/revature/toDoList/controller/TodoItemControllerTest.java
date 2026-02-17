@@ -5,8 +5,10 @@ import com.revature.toDoList.dto.mapper.TodoItemMapper;
 import com.revature.toDoList.dto.request.TodoItemCreateRequest;
 import com.revature.toDoList.dto.request.TodoUpdateRequest;
 import com.revature.toDoList.dto.response.TodoItemResponse;
+import com.revature.toDoList.entity.SubTask;
 import com.revature.toDoList.entity.TodoItem;
 import com.revature.toDoList.entity.User;
+import com.revature.toDoList.repository.SubTaskRepository;
 import com.revature.toDoList.repository.TodoItemRepository;
 import com.revature.toDoList.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
@@ -58,8 +60,11 @@ class TodoItemControllerTest {
     private TodoItemRepository todoItemRepository;
     @Autowired
     private TodoItemMapper todoItemMapper;
+    @Autowired
+    private SubTaskRepository subTaskRepository;
 
     private long todoId;
+    private User admin;
 
 
     @BeforeEach
@@ -71,6 +76,16 @@ class TodoItemControllerTest {
         user.setPassword(passwordEncoder.encode("Password123!"));
         User userSaved = userRepository.save(user);
 
+        admin = new User();
+        admin.setUsername("admin1");
+        admin.setRole("ADMIN");
+        admin.setEmail("admin1@example.com");
+        admin.setPassword(passwordEncoder.encode("Password123!"));
+        admin = userRepository.save(admin);
+
+        tokenAdmin = jwtService.generateToken(admin);
+
+
 
         tokenUser = jwtService.generateToken(userSaved);
 
@@ -79,7 +94,6 @@ class TodoItemControllerTest {
                 "Finish Spring Security",
                 "Implement JWT authentication and authorization",
                 LocalDate.now().plusDays(2),
-                false,
                 false,
                 LocalDateTime.now()
         );
@@ -109,7 +123,6 @@ class TodoItemControllerTest {
                 "angular",
                 "Implement component",
                 LocalDate.now().plusDays(2),
-                false,
                 false,
                 LocalDateTime.now()
         );
@@ -194,4 +207,77 @@ class TodoItemControllerTest {
 
 
     }
+
+    @Test
+    void adminCloseItem_success() throws Exception {
+        // Arrange: attach 2 completed subtasks to the existing todoId
+        TodoItem item = todoItemRepository.findById(todoId).orElseThrow();
+
+        SubTask s1 = new SubTask();
+        s1.setDescription("Sub 1");
+        s1.setCompleted(true);
+        s1.setTodoItem(item);
+
+        SubTask s2 = new SubTask();
+        s2.setDescription("Sub 2");
+        s2.setCompleted(true);
+        s2.setTodoItem(item);
+
+        subTaskRepository.save(s1);
+        subTaskRepository.save(s2);
+
+        // Act + Assert
+        mockMvc.perform(patch("/api/v1/admin/item/{todoId}/close", todoId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + tokenAdmin))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.todoId").value((int) todoId))
+                .andExpect(jsonPath("$.closed").value(true));
+    }
+
+    @Test
+    void adminCloseItem_fails_whenAnySubtaskOpen() throws Exception {
+        // Arrange: one subtask NOT completed
+        TodoItem item = todoItemRepository.findById(todoId).orElseThrow();
+
+        SubTask open = new SubTask();
+        open.setDescription("Open subtask");
+        open.setCompleted(false);
+        open.setTodoItem(item);
+        item.getSubTask().add(open);
+        subTaskRepository.save(open);
+
+        // Act + Assert
+        mockMvc.perform(patch("/api/v1/admin/item/{todoId}/close", todoId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + tokenAdmin))
+
+                .andExpect(status().isConflict());
+    }
+
+    @Test
+    void adminReopenTodoItem_success() throws Exception {
+        // Arrange: mark it completed first
+        TodoItem item = todoItemRepository.findById(todoId).orElseThrow();
+        item.setCompleted(true);
+        todoItemRepository.save(item);
+
+        // Act + Assert
+        mockMvc.perform(patch("/api/v1/admin/item/{todoId}/reopen", todoId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + tokenAdmin))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.todoId").value((int) todoId))
+                .andExpect(jsonPath("$.closed").value(false));
+    }
+
+    @Test
+    void userCannotCloseAdminEndpoint_forbidden() throws Exception {
+        mockMvc.perform(patch("/api/v1/admin/item/{todoId}/close", todoId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + tokenUser))
+                .andExpect(status().isForbidden());
+    }
+
+
 }
