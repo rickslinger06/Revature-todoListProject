@@ -61,6 +61,18 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
     }
 
+    @ExceptionHandler(SubTaskNotClosedException.class)
+    public ResponseEntity<ErrorResponse> handleSubTaskNotCompletedException(
+            InvalidTokenException ex,
+            HttpServletRequest req) {
+
+        ErrorResponse error = new ErrorResponse();
+        error.setLocalDateTime(LocalDateTime.now());
+        error.setMessage(ex.getMessage());
+        error.setPath(req.getRequestURI());
+        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGeneric(
             Exception ex,

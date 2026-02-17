@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-02-16T20:32:28-0600",
+    date = "2026-02-17T12:40:50-0600",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 21.0.10 (Microsoft)"
 )
 @Component
@@ -29,6 +29,7 @@ public class TodoItemMapperImpl implements TodoItemMapper {
         String description = null;
         LocalDate dueDate = null;
         boolean completed = false;
+        Boolean closed = null;
         LocalDateTime createdAt = null;
         LocalDateTime updatedAt = null;
 
@@ -38,10 +39,11 @@ public class TodoItemMapperImpl implements TodoItemMapper {
         description = todoItem.getDescription();
         dueDate = todoItem.getDueDate();
         completed = todoItem.isCompleted();
+        closed = todoItem.getClosed();
         createdAt = todoItem.getCreatedAt();
         updatedAt = todoItem.getUpdatedAt();
 
-        TodoItemResponse todoItemResponse = new TodoItemResponse( todoId, title, description, dueDate, completed, createdAt, updatedAt, userId );
+        TodoItemResponse todoItemResponse = new TodoItemResponse( todoId, title, description, dueDate, completed, closed, createdAt, updatedAt, userId );
 
         return todoItemResponse;
     }

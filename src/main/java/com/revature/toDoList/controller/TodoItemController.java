@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -63,6 +64,15 @@ public class TodoItemController {
         return ResponseEntity.status(HttpStatus.OK).body(message);
     }
 
-
+    @PreAuthorize("hasRole('ADMIN')")
+    @PatchMapping("/admin/item/{todoId}/close")
+    public ResponseEntity<TodoItemResponse> close(@PathVariable long todoId) {
+        return ResponseEntity.ok(todoItemService.closeTodoItem(todoId));
+    }
+    @PreAuthorize("hasRole('ADMIN')")
+    @PatchMapping("/admin/item/{todoId}/reopen")
+    public ResponseEntity<TodoItemResponse> reopen(@PathVariable long todoId) {
+        return ResponseEntity.ok(todoItemService.reopenTodoItem(todoId));
+    }
 
 }

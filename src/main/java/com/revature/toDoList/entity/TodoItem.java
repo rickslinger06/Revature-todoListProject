@@ -30,6 +30,9 @@ public class TodoItem {
     private LocalDate dueDate;
     @Column(nullable = false)
     private boolean completed;
+
+    @Column
+    private Boolean closed;
     @Column(nullable = false)
     private LocalDateTime createdAt;
 

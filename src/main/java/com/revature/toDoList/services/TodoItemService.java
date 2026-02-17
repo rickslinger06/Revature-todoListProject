@@ -16,4 +16,7 @@ public interface TodoItemService {
     TodoItemResponse updateTodoItem(TodoUpdateRequest req);
     void deleteToDoItem(long todoId);
 
+    TodoItemResponse closeTodoItem(long todoId);
+
+    TodoItemResponse reopenTodoItem(long todoId);
 }

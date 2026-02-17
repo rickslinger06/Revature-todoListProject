@@ -80,6 +80,7 @@ class TodoItemControllerTest {
                 "Implement JWT authentication and authorization",
                 LocalDate.now().plusDays(2),
                 false,
+                false,
                 LocalDateTime.now()
         );
 
@@ -108,6 +109,7 @@ class TodoItemControllerTest {
                 "angular",
                 "Implement component",
                 LocalDate.now().plusDays(2),
+                false,
                 false,
                 LocalDateTime.now()
         );
