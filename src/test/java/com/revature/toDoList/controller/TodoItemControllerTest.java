@@ -3,6 +3,7 @@ package com.revature.toDoList.controller;
 import com.revature.toDoList.auth.JwtService;
 import com.revature.toDoList.dto.mapper.TodoItemMapper;
 import com.revature.toDoList.dto.request.TodoItemCreateRequest;
+import com.revature.toDoList.dto.request.TodoUpdateRequest;
 import com.revature.toDoList.dto.response.TodoItemResponse;
 import com.revature.toDoList.entity.TodoItem;
 import com.revature.toDoList.entity.User;
@@ -30,7 +31,7 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -150,23 +151,34 @@ class TodoItemControllerTest {
     @Test
     void getToDoItemById() throws Exception {
 
-        MvcResult result = mockMvc.perform(get("/api/v1/user/item/{todoId}", todoId)
+      mockMvc.perform(get("/api/v1/user/item/{todoId}", todoId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + tokenUser))
                 .andExpect(status().isOk())
-                .andReturn();
-
-        JsonNode json = objectMapper.readTree(result.getResponse().getContentAsString());
-        String title = json.get("title").asText();
-
-        Assertions.assertEquals(title, "Finish Spring Security");
+                .andExpect(jsonPath("$.title").value("Finish Spring Security"));
 
     }
-//
-//    @Test
-//    void updateToDoItem() {
-//    }
-//
+
+    @Test
+    void updateToDoItem() throws Exception {
+
+        TodoItem item = todoItemRepository.findById(todoId).get();
+
+        TodoUpdateRequest req = new TodoUpdateRequest();
+        req.setTitle("new title");
+        req.setId(item.getTodoId());
+        req.setDescription(item.getDescription());
+        req.setCompleted(true);
+        mockMvc.perform(put("/api/v1/user/item/update")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + tokenUser)
+                        .content(objectMapper.writeValueAsString(req)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.title").value("new title"))
+                .andExpect(jsonPath("$.completed").value(true))
+                .andExpect(jsonPath("$.description").value("Implement JWT authentication and authorization"));
+    }
+
     @Test
     void testDeleteToDoItem() throws Exception {
         MvcResult result = mockMvc.perform(delete("/api/v1/user/item/delete/{todoId}", todoId)

@@ -2,6 +2,7 @@ package com.revature.toDoList.services.impl;
 
 import com.revature.toDoList.dto.mapper.TodoItemMapper;
 import com.revature.toDoList.dto.request.TodoItemCreateRequest;
+import com.revature.toDoList.dto.request.TodoUpdateRequest;
 import com.revature.toDoList.dto.response.TodoItemResponse;
 import com.revature.toDoList.entity.TodoItem;
 import com.revature.toDoList.entity.User;
@@ -70,18 +71,18 @@ public class TodoItemServiceImpl implements TodoItemService {
     }
 
     @Override
-    public TodoItemResponse updateTodoItem(TodoItemCreateRequest req) {
+    public TodoItemResponse updateTodoItem(TodoUpdateRequest req) {
 
-        TodoItem item = todoItemRepository.findById(req.todoId()).orElseThrow(
+        TodoItem item = todoItemRepository.findById(req.getId()).orElseThrow(
                 () -> new TodoIdNotFoundException("No to do item found"));
 
-        log.info("TO ID FOUND" + req.todoId());
+        log.info("To do ID FOUND" + req.getId());
 
-        item.setTitle(req.title());
-        item.setCompleted(req.completed());
-        item.setDescription(req.description());
+        item.setTitle(req.getTitle());
+        item.setCompleted(req.getCompleted());
+        item.setDescription(req.getDescription());
         item.setUpdatedAt(LocalDateTime.now());
-        item.setDueDate(req.dueDate());
+        item.setDueDate(req.getDueDate());
 
         log.info("UPDATED ITEM" + item.getDueDate());
         todoItemRepository.save(item);

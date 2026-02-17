@@ -24,8 +24,9 @@ import tools.jackson.databind.ObjectMapper;
 
 import java.util.UUID;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
@@ -81,18 +82,13 @@ class UserControllerTest {
 
     @Test
     void testGetUserById() throws Exception {
-        MvcResult result = mockMvc.perform(get("/api/v1/user/{userId}", userId)
+        mockMvc.perform(get("/api/v1/user/{userId}", userId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + tokenUser))
                 .andExpect(status().isOk())
-                .andReturn();
+                .andExpect(jsonPath("$.username").value("user1"))
+                .andExpect(jsonPath("$.email").value("user1@example.com"));
 
-        JsonNode json = objectMapper.readTree(result.getResponse().getContentAsString());
-        String username = json.get("username").asString();
-        String email = json.get("email").asString();
-
-        Assertions.assertEquals(username,"user1");
-        Assertions.assertEquals(email,"user1@example.com");
     }
 
 

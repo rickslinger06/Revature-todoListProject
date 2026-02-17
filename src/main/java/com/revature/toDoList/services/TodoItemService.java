@@ -2,6 +2,7 @@ package com.revature.toDoList.services;
 
 import com.revature.toDoList.dto.UserDTO;
 import com.revature.toDoList.dto.request.TodoItemCreateRequest;
+import com.revature.toDoList.dto.request.TodoUpdateRequest;
 import com.revature.toDoList.dto.response.TodoItemResponse;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public interface TodoItemService {
     List<TodoItemResponse> getToDoItemByUserId(String userId);
     TodoItemResponse getByTodoId(long todoId);
 
-    TodoItemResponse updateTodoItem(TodoItemCreateRequest req);
+    TodoItemResponse updateTodoItem(TodoUpdateRequest req);
     void deleteToDoItem(long todoId);
 
 }

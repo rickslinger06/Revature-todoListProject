@@ -2,6 +2,7 @@ package com.revature.toDoList.controller;
 
 import com.revature.toDoList.dto.mapper.TodoItemMapper;
 import com.revature.toDoList.dto.request.TodoItemCreateRequest;
+import com.revature.toDoList.dto.request.TodoUpdateRequest;
 import com.revature.toDoList.dto.response.TodoItemResponse;
 import com.revature.toDoList.services.TodoItemService;
 import lombok.AllArgsConstructor;
@@ -48,11 +49,10 @@ public class TodoItemController {
     }
 
     @PutMapping("/user/item/update")
-    public ResponseEntity<String> updateToDoItem(@Valid @RequestBody  TodoItemCreateRequest request){
-        todoItemService.updateTodoItem(request);
-        String message = "Successfully updated item " + request.title();
+    public ResponseEntity<TodoItemResponse> updateToDoItem(@Valid @RequestBody TodoUpdateRequest request){
+        TodoItemResponse response = todoItemService.updateTodoItem(request);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(message);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @DeleteMapping("/user/item/delete/{todoId}")
