@@ -16,21 +16,25 @@ import java.util.Date;
 @Service
 public class JwtService {
     private final Key key;
-    private final long expiration;
+    private final long accessExpirationMs;
+    private final long refreshExpirationMs;
 
     public JwtService(JwtConfig jwtConfig){
         this.key = Keys.hmacShaKeyFor(jwtConfig.getSecret().getBytes(StandardCharsets.UTF_8));
-        this.expiration = jwtConfig.getExpirationMs();
+        this.accessExpirationMs = jwtConfig.getExpirationMs();
+        this.refreshExpirationMs = jwtConfig.getRefreshExpirationMs();
+    }
+    public String generateAccessToken(User user){
+        return buildToken(user, accessExpirationMs,"access");
     }
 
-    public long getExpirationMs(){
-
-        return expiration;
+    public String generateRefreshToken(User user){
+        return buildToken(user, refreshExpirationMs,"refresh");
     }
 
-    public String generateToken(User user){
+    private String buildToken(User user,long expMs, String type){
         Date now = new Date();
-        Date expiry = new Date(now.getTime() + expiration);
+        Date expiry = new Date(now.getTime() + expMs);
 
 
         String role = user.getRole();
@@ -47,16 +51,23 @@ public class JwtService {
                 .setIssuedAt(now)
                 .setExpiration(expiry)
                 .claim("role",role)
+                .claim("type",type)
                 .claim("username",user.getUsername())
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
     public String extractUserId(String token){
+
         return parseClaims(token).getBody().getSubject();
     }
     public String extractUsername(String token){
+
         return parseClaims(token).getBody().get("username",String.class);
+    }
+
+    public String extractType(String token){
+        return parseClaims(token).getBody().get("type",String.class);
     }
 
     private boolean isExpired(String token) {
@@ -64,8 +75,15 @@ public class JwtService {
         return exp.before(new Date());
     }
 
-    public boolean isTokenValid(String token, UserDetails userDetails) {
+    public void assertTokenType(String token, String expectedType) {
+        String type = extractType(token);
+        if (type == null || !type.equals(expectedType)) {
+            throw new InvalidTokenException("Invalid token type");
+        }
+    }
 
+
+    public boolean isTokenValid(String token, UserDetails userDetails) {
         String username = extractUsername(token);
 
         if (!username.equals(userDetails.getUsername())) {
@@ -83,6 +101,7 @@ public class JwtService {
     private Jws<Claims> parseClaims(String token){
         return Jwts.parserBuilder()
                 .setSigningKey(key)
+                .setAllowedClockSkewSeconds(60)
                 .build()
                 .parseClaimsJws(token);
 

@@ -16,6 +16,7 @@
 /Users/rickstermuyco/revatureV2/Revature-todoListProject/src/main/java/com/revature/toDoList/dto/response/AuthResponse.java
 /Users/rickstermuyco/revatureV2/Revature-todoListProject/src/main/java/com/revature/toDoList/auth/JwtAuthFilter.java
 /Users/rickstermuyco/revatureV2/Revature-todoListProject/src/main/java/com/revature/toDoList/auth/JwtService.java
+/Users/rickstermuyco/revatureV2/Revature-todoListProject/src/main/java/com/revature/toDoList/dto/request/TodoUpdateRequest.java
 /Users/rickstermuyco/revatureV2/Revature-todoListProject/src/main/java/com/revature/toDoList/services/impl/TodoItemServiceImpl.java
 /Users/rickstermuyco/revatureV2/Revature-todoListProject/src/main/java/com/revature/toDoList/controller/SubTaskController.java
 /Users/rickstermuyco/revatureV2/Revature-todoListProject/src/main/java/com/revature/toDoList/dto/mapper/SubTaskMapper.java
@@ -29,6 +30,7 @@
 /Users/rickstermuyco/revatureV2/Revature-todoListProject/src/main/java/com/revature/toDoList/entity/TodoItem.java
 /Users/rickstermuyco/revatureV2/Revature-todoListProject/src/main/java/com/revature/toDoList/dto/response/ErrorResponse.java
 /Users/rickstermuyco/revatureV2/Revature-todoListProject/src/main/java/com/revature/toDoList/exception/ToDoListItemNotFoundException.java
+/Users/rickstermuyco/revatureV2/Revature-todoListProject/src/main/java/com/revature/toDoList/exception/SubTaskNotClosedException.java
 /Users/rickstermuyco/revatureV2/Revature-todoListProject/src/main/java/com/revature/toDoList/services/impl/SubtaskServiceImpl.java
 /Users/rickstermuyco/revatureV2/Revature-todoListProject/src/main/java/com/revature/toDoList/exception/UserNotFoundFoundException.java
 /Users/rickstermuyco/revatureV2/Revature-todoListProject/src/main/java/com/revature/toDoList/repository/SubTaskRepository.java

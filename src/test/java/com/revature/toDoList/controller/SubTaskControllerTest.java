@@ -57,7 +57,7 @@ class SubTaskControllerTest {
         user.setPassword(passwordEncoder.encode("Password123!"));
         User savedUser = userRepository.save(user);
 
-        tokenUser = jwtService.generateToken(savedUser);
+        tokenUser = jwtService.generateAccessToken(savedUser);
 
         // TodoItem (required for FK in SubTask)
         TodoItem todo = new TodoItem();

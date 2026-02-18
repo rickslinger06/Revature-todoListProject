@@ -1,2 +1,6 @@
+/Users/rickstermuyco/revatureV2/Revature-todoListProject/src/test/java/com/revature/toDoList/controller/AuthControllerTest.java
 /Users/rickstermuyco/revatureV2/Revature-todoListProject/src/test/java/com/revature/toDoList/controller/TodoItemControllerTest.java
+/Users/rickstermuyco/revatureV2/Revature-todoListProject/src/test/java/com/revature/toDoList/services/impl/TodoItemServiceImplTest.java
+/Users/rickstermuyco/revatureV2/Revature-todoListProject/src/test/java/com/revature/toDoList/controller/UserControllerTest.java
 /Users/rickstermuyco/revatureV2/Revature-todoListProject/src/test/java/com/revature/toDoList/ToDoListApplicationTests.java
+/Users/rickstermuyco/revatureV2/Revature-todoListProject/src/test/java/com/revature/toDoList/controller/SubTaskControllerTest.java

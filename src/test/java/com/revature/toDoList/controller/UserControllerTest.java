@@ -60,8 +60,8 @@ class UserControllerTest {
         user.setPassword(passwordEncoder.encode("Password123!"));
         User userSaved = userRepository.save(user);
 
-        tokenAdmin = jwtService.generateToken(adminSaved);
-        tokenUser = jwtService.generateToken(userSaved);
+        tokenAdmin = jwtService.generateAccessToken(adminSaved);
+        tokenUser = jwtService.generateAccessToken(userSaved);
 
       userId = jwtService.extractUserId(tokenUser);
     }

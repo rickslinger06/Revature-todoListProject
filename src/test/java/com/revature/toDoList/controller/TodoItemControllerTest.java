@@ -83,11 +83,11 @@ class TodoItemControllerTest {
         admin.setPassword(passwordEncoder.encode("Password123!"));
         admin = userRepository.save(admin);
 
-        tokenAdmin = jwtService.generateToken(admin);
+        tokenAdmin = jwtService.generateAccessToken(admin);
 
 
 
-        tokenUser = jwtService.generateToken(userSaved);
+        tokenUser = jwtService.generateAccessToken(userSaved);
 
         TodoItemCreateRequest request = new TodoItemCreateRequest(
                 null,

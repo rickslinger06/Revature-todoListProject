@@ -27,8 +27,9 @@ spring:
 
 jwt:
   secret: ${JWT_SECRET}
-  expirationMs: 3600000  # 1 hour
-  issuer: "https://api.todolist.com"
+  accessExpirationMs: 1800000
+  refreshExpirationMs: 1296000000
+  issuer: "localhost"
   audience: "todo-api"
 
 management:
