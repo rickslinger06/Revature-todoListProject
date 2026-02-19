@@ -3,6 +3,7 @@ package com.revature.toDoList.services.impl;
 import com.revature.toDoList.dto.mapper.TodoItemMapper;
 import com.revature.toDoList.dto.request.TodoItemCreateRequest;
 import com.revature.toDoList.dto.request.TodoUpdateRequest;
+import com.revature.toDoList.dto.response.SubTaskResponse;
 import com.revature.toDoList.dto.response.TodoItemResponse;
 import com.revature.toDoList.entity.SubTask;
 import com.revature.toDoList.entity.TodoItem;
@@ -13,6 +14,7 @@ import com.revature.toDoList.exception.TodoIdNotFoundException;
 import com.revature.toDoList.exception.UserNotFoundFoundException;
 import com.revature.toDoList.repository.TodoItemRepository;
 import com.revature.toDoList.repository.UserRepository;
+import com.revature.toDoList.services.SubtaskService;
 import com.revature.toDoList.services.TodoItemService;
 import com.revature.toDoList.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
@@ -63,6 +65,18 @@ public class TodoItemServiceImpl implements TodoItemService {
                 .map(mapper::toResponse)
                 .toList();
     }
+
+    @Override
+    public List<TodoItemResponse> getToDoItemByUsername(String username) {
+
+        List<TodoItem> todoList = todoItemRepository.findByUser_Username(username)
+                .orElseThrow(() -> new ToDoListItemNotFoundException("No To Do List found"));
+
+        return todoList.stream()
+                .map(mapper::toResponse)
+                .toList();
+    }
+
 
     @Override
     public TodoItemResponse getByTodoId(long todoId) {
@@ -131,6 +145,8 @@ public class TodoItemServiceImpl implements TodoItemService {
 
         return mapper.toResponse(todoItemRepository.save(item));
     }
+
+
 
 
 }

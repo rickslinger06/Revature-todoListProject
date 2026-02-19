@@ -21,7 +21,7 @@ public class JwtService {
 
     public JwtService(JwtConfig jwtConfig){
         this.key = Keys.hmacShaKeyFor(jwtConfig.getSecret().getBytes(StandardCharsets.UTF_8));
-        this.accessExpirationMs = jwtConfig.getExpirationMs();
+        this.accessExpirationMs = jwtConfig.getAccessExpirationMs();
         this.refreshExpirationMs = jwtConfig.getRefreshExpirationMs();
     }
     public String generateAccessToken(User user){

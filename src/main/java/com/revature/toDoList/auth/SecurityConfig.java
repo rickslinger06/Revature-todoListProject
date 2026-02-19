@@ -1,5 +1,6 @@
 package com.revature.toDoList.auth;
 
+import com.revature.toDoList.exception.InvalidTokenException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -71,7 +72,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception{
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws InvalidTokenException {
         return configuration.getAuthenticationManager();
     }
 

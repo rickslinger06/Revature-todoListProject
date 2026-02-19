@@ -45,7 +45,7 @@ public class GlobalExceptionHandler {
         error.setMessage(ex.getMessage());
         error.setPath(req.getRequestURI());
 
-        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+        return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
 
     }
 

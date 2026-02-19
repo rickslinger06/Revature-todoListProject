@@ -5,6 +5,7 @@ import com.revature.toDoList.dto.request.TodoItemCreateRequest;
 import com.revature.toDoList.dto.request.TodoUpdateRequest;
 import com.revature.toDoList.dto.response.TodoItemResponse;
 import com.revature.toDoList.services.TodoItemService;
+import com.revature.toDoList.util.SecurityUtils;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,8 +38,14 @@ public class TodoItemController {
 
         List<TodoItemResponse> responseItems = todoItemService.getToDoItemByUserId(userId);
         return ResponseEntity.status(HttpStatus.OK).body(responseItems);
+    }
 
+    @GetMapping("/user/items")
+    public ResponseEntity<List<TodoItemResponse>> getAllItemsByUsername(){
 
+        String username = SecurityUtils.getCurrentUsername();
+        List<TodoItemResponse> responseItems = todoItemService.getToDoItemByUsername(username);
+        return ResponseEntity.status(HttpStatus.OK).body(responseItems);
     }
 
     @GetMapping("/user/item/{todoId}")

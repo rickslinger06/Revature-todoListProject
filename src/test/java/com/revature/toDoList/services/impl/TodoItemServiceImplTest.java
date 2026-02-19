@@ -2,12 +2,12 @@ package com.revature.toDoList.services.impl;
 
 import com.revature.toDoList.dto.mapper.TodoItemMapper;
 import com.revature.toDoList.dto.request.TodoItemCreateRequest;
+import com.revature.toDoList.dto.response.SubTaskResponse;
 import com.revature.toDoList.dto.response.TodoItemResponse;
 import com.revature.toDoList.entity.TodoItem;
 import com.revature.toDoList.entity.User;
 import com.revature.toDoList.repository.TodoItemRepository;
 import com.revature.toDoList.repository.UserRepository;
-import com.revature.toDoList.services.impl.TodoItemServiceImpl;
 import com.revature.toDoList.util.SecurityUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,7 +40,6 @@ class TodoItemServiceImplTest {
 
     private PasswordEncoder encoder;
 
-    // Shared test
     private User user;
     private String username;
 
@@ -47,6 +47,9 @@ class TodoItemServiceImplTest {
     private TodoItem entity;
     private TodoItem saved;
     private TodoItemResponse response;
+
+    // shared subtasks list for response objects
+    private List<SubTaskResponse> subTasks;
 
     @BeforeEach
     void setUp() {
@@ -61,7 +64,6 @@ class TodoItemServiceImplTest {
         user.setEmail("user1@example.com");
         user.setPassword(encoder.encode("Password123!"));
 
-
         createRequest = new TodoItemCreateRequest(
                 null,
                 "Finish Spring Security",
@@ -74,7 +76,7 @@ class TodoItemServiceImplTest {
         entity = new TodoItem();
         entity.setTitle("Finish Spring Security");
         entity.setDescription("Implement JWT authentication and authorization");
-        entity.setDueDate(createRequest.dueDate()); // if not a record: createRequest.getDueDate()
+        entity.setDueDate(createRequest.dueDate());
         entity.setCompleted(false);
         entity.setUser(user);
 
@@ -86,17 +88,20 @@ class TodoItemServiceImplTest {
         saved.setCompleted(entity.isCompleted());
         saved.setUser(user);
 
+        //for create tests, subtasks can be empty
+        subTasks = List.of();
+
         response = new TodoItemResponse(
                 saved.getTodoId(),
                 saved.getTitle(),
                 saved.getDescription(),
                 saved.getDueDate(),
                 saved.isCompleted(),
-             false,
+                false,
                 LocalDateTime.now(),
                 LocalDateTime.now(),
-                user.getUserId()
-
+                user.getUserId(),
+                subTasks
         );
     }
 
@@ -114,7 +119,9 @@ class TodoItemServiceImplTest {
 
             assertNotNull(actual);
             assertEquals("Finish Spring Security", actual.title());
-            assertEquals(false, actual.completed());
+            assertFalse(actual.completed());
+            assertNotNull(actual.subTasks());
+            assertEquals(0, actual.subTasks().size());
 
             verify(userRepository).findByUsername(username);
             verify(todoItemRepository).save(any(TodoItem.class));
@@ -159,7 +166,8 @@ class TodoItemServiceImplTest {
                 false,
                 LocalDateTime.now(),
                 LocalDateTime.now(),
-                user.getUserId()
+                user.getUserId(),
+                List.of() // ✅ empty subtasks list
         );
 
         try (MockedStatic<SecurityUtils> mocked = mockStatic(SecurityUtils.class)) {
@@ -173,6 +181,9 @@ class TodoItemServiceImplTest {
             TodoItemResponse actual = todoItemService.createToDoItem(reqCompletedTrue);
 
             assertTrue(actual.completed());
+            assertNotNull(actual.subTasks());
+            assertEquals(0, actual.subTasks().size());
+
             verify(todoItemRepository).save(any(TodoItem.class));
         }
     }

@@ -1,21 +1,29 @@
 package com.revature.toDoList.dto.mapper;
 
 import com.revature.toDoList.dto.request.TodoItemCreateRequest;
+import com.revature.toDoList.dto.response.SubTaskResponse;
 import com.revature.toDoList.dto.response.TodoItemResponse;
+import com.revature.toDoList.entity.SubTask;
 import com.revature.toDoList.entity.TodoItem;
 import com.revature.toDoList.entity.User;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.processing.Generated;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-02-18T09:11:26-0600",
+    date = "2026-02-18T20:37:10-0600",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 21.0.10 (Oracle Corporation)"
 )
 @Component
 public class TodoItemMapperImpl implements TodoItemMapper {
+
+    @Autowired
+    private SubTaskMapper subTaskMapper;
 
     @Override
     public TodoItemResponse toResponse(TodoItem todoItem) {
@@ -24,6 +32,7 @@ public class TodoItemMapperImpl implements TodoItemMapper {
         }
 
         String userId = null;
+        List<SubTaskResponse> subTasks = null;
         long todoId = 0L;
         String title = null;
         String description = null;
@@ -34,6 +43,7 @@ public class TodoItemMapperImpl implements TodoItemMapper {
         LocalDateTime updatedAt = null;
 
         userId = todoItemUserUserId( todoItem );
+        subTasks = subTaskListToSubTaskResponseList( todoItem.getSubTask() );
         todoId = todoItem.getTodoId();
         title = todoItem.getTitle();
         description = todoItem.getDescription();
@@ -43,7 +53,7 @@ public class TodoItemMapperImpl implements TodoItemMapper {
         createdAt = todoItem.getCreatedAt();
         updatedAt = todoItem.getUpdatedAt();
 
-        TodoItemResponse todoItemResponse = new TodoItemResponse( todoId, title, description, dueDate, completed, closed, createdAt, updatedAt, userId );
+        TodoItemResponse todoItemResponse = new TodoItemResponse( todoId, title, description, dueDate, completed, closed, createdAt, updatedAt, userId, subTasks );
 
         return todoItemResponse;
     }
@@ -77,5 +87,18 @@ public class TodoItemMapperImpl implements TodoItemMapper {
             return null;
         }
         return userId;
+    }
+
+    protected List<SubTaskResponse> subTaskListToSubTaskResponseList(List<SubTask> list) {
+        if ( list == null ) {
+            return null;
+        }
+
+        List<SubTaskResponse> list1 = new ArrayList<SubTaskResponse>( list.size() );
+        for ( SubTask subTask : list ) {
+            list1.add( subTaskMapper.toResponse( subTask ) );
+        }
+
+        return list1;
     }
 }

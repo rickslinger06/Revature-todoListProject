@@ -19,4 +19,6 @@ public interface TodoItemService {
     TodoItemResponse closeTodoItem(long todoId);
 
     TodoItemResponse reopenTodoItem(long todoId);
+
+    List<TodoItemResponse> getToDoItemByUsername(String username);
 }

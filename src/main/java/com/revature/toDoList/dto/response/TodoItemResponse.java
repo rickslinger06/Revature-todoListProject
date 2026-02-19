@@ -19,7 +19,8 @@ public record TodoItemResponse(
         Boolean closed,
         LocalDateTime createdAt,
         LocalDateTime updatedAt,
-        String userId
+        String userId,
+        List<SubTaskResponse> subTasks
 
 ) {
 }

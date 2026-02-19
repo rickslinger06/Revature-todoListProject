@@ -6,6 +6,7 @@ public record SubTaskResponse(
         long subTaskId,
         String description,
         Boolean completed,
+        LocalDateTime createdAt,
         LocalDateTime updatedAt,
         long todoId
 ) {

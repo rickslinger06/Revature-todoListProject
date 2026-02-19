@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-02-18T09:11:26-0600",
+    date = "2026-02-18T20:37:10-0600",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 21.0.10 (Oracle Corporation)"
 )
 @Component
@@ -40,15 +40,17 @@ public class SubTaskMapperImpl implements SubTaskMapper {
         long subTaskId = 0L;
         String description = null;
         Boolean completed = null;
+        LocalDateTime createdAt = null;
         LocalDateTime updatedAt = null;
 
         todoId = subTaskTodoItemTodoId( subTask );
         subTaskId = subTask.getSubTaskId();
         description = subTask.getDescription();
         completed = subTask.getCompleted();
+        createdAt = subTask.getCreatedAt();
         updatedAt = subTask.getUpdatedAt();
 
-        SubTaskResponse subTaskResponse = new SubTaskResponse( subTaskId, description, completed, updatedAt, todoId );
+        SubTaskResponse subTaskResponse = new SubTaskResponse( subTaskId, description, completed, createdAt, updatedAt, todoId );
 
         return subTaskResponse;
     }

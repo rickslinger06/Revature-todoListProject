@@ -16,7 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class JwtConfig {
 
     private String secret;
-    private long expirationMs;
+    private long accessExpirationMs;
     private long refreshExpirationMs;
 
 }
