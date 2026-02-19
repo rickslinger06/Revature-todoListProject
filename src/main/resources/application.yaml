@@ -27,8 +27,8 @@ spring:
 
 jwt:
   secret: ${JWT_SECRET}
-  accessExpirationMs: 1800000
-  refreshExpirationMs: 1296000000
+  accessExpirationMs: 600000     # 10 minutes
+  refreshExpirationMs: 864000000 # 10 days
   issuer: "localhost"
   audience: "todo-api"
 

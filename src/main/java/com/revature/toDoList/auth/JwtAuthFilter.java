@@ -1,5 +1,8 @@
 package com.revature.toDoList.auth;
 
+import com.revature.toDoList.exception.InvalidTokenException;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,45 +21,50 @@ import java.io.IOException;
 public class JwtAuthFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final TodoListUserDetailService userDetailService;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
-                                    FilterChain filterChain)
-            throws ServletException, IOException {
+                                    FilterChain filterChain) throws ServletException, IOException {
 
-        String authHeader = request.getHeader("Authorization");
-        if(authHeader == null || !authHeader.startsWith("Bearer ")){
-            filterChain.doFilter(request,response);
+        final String authHeader = request.getHeader("Authorization");
+
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            filterChain.doFilter(request, response);
             return;
         }
 
-        String token = authHeader.substring(7);
-        String username;
-        try{
-            username= jwtService.extractUsername(token);
-        }catch(Exception e){
-            filterChain.doFilter(request,response);
-            return;
-        }
+        final String jwt = authHeader.substring(7);
 
-        if(username != null && SecurityContextHolder.getContext().getAuthentication() == null){
-            UserDetails userDetails = userDetailService.loadUserByUsername(username);
+        try {
+            // If token is expired/invalid, we just don't authenticate.
+            String username = jwtService.extractUsername(jwt);
 
-            jwtService.assertTokenType(token,"access");
+            // Optional: prevent refresh token from being used as access token
+            jwtService.assertTokenType(jwt, "access");
 
-            if(jwtService.isTokenValid(token,userDetails)){
+            // Load user and validate
+            UserDetails userDetails = this.userDetailService.loadUserByUsername(username);
+
+            if (jwtService.isTokenValid(jwt, userDetails)
+                    && SecurityContextHolder.getContext().getAuthentication() == null) {
+
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(
-                                userDetails,
-                                null,
-                                userDetails.getAuthorities()
-                        );
+                                userDetails, null, userDetails.getAuthorities());
 
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
+
+        } catch (ExpiredJwtException e) {
+            // access token expired: don't throw, let Spring return 401
+            SecurityContextHolder.clearContext();
+        } catch (InvalidTokenException | JwtException e) {
+            // invalid token: also don't throw, just don't authenticate
+            SecurityContextHolder.clearContext();
         }
 
-        filterChain.doFilter(request,response);
+        filterChain.doFilter(request, response);
     }
 }
