@@ -56,6 +56,13 @@ public class TodoItemController {
 
     }
 
+    @GetMapping("/admin/items/all")
+    public ResponseEntity<List<TodoItemResponse>> getAllItems(){
+        List<TodoItemResponse> list = todoItemService.getAllTodoItems();
+
+        return ResponseEntity.status(200).body(list);
+    }
+
     @PutMapping("/user/item/update")
     public ResponseEntity<TodoItemResponse> updateToDoItem(@Valid @RequestBody TodoUpdateRequest request){
         TodoItemResponse response = todoItemService.updateTodoItem(request);
@@ -71,13 +78,13 @@ public class TodoItemController {
         return ResponseEntity.status(HttpStatus.OK).body(message);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @PatchMapping("/admin/item/{todoId}/close")
+//    @PreAuthorize("hasRole('ADMIN')")
+    @PatchMapping("/user/item/{todoId}/close")
     public ResponseEntity<TodoItemResponse> close(@PathVariable long todoId) {
         return ResponseEntity.ok(todoItemService.closeTodoItem(todoId));
     }
     @PreAuthorize("hasRole('ADMIN')")
-    @PatchMapping("/admin/item/{todoId}/reopen")
+    @PatchMapping("/user/item/{todoId}/reopen")
     public ResponseEntity<TodoItemResponse> reopen(@PathVariable long todoId) {
         return ResponseEntity.ok(todoItemService.reopenTodoItem(todoId));
     }

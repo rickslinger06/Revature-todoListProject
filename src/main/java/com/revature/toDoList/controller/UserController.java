@@ -27,7 +27,7 @@ public class UserController {
 
        return new ResponseEntity(HttpStatus.OK);
     }
-//    @PreAuthorize("hasRole('ADMIN')")
+
     @GetMapping("/user/{userId}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable String userId){
         UserDTO dto = userService.getUserById(userId);

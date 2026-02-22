@@ -70,18 +70,17 @@ public class SubtaskServiceImpl implements SubtaskService {
     }
 
     @Override
-    public SubTaskResponse updateSubTask(long subTaskId, SubTaskCreateRequest subTaskCreateRequest) {
+    public SubTaskResponse closeSubTask(long subTaskId) {
 
         SubTask updateTask = subTaskRepository.findById(subTaskId).orElseThrow(() -> new SubTaskNotFoundException(
                 "SubTask does not exist"
         ));
 
-        updateTask.setCompleted(subTaskCreateRequest.completed());
-        updateTask.setDescription(subTaskCreateRequest.description());
+        updateTask.setCompleted(true);
         updateTask.setUpdatedAt(LocalDateTime.now());
 
         subTaskRepository.save(updateTask);
-        log.info("updated Subtask Successfully");
+        log.info("Completed Subtask Successfully id = {} ", subTaskId);
         return mapper.toResponse(updateTask);
     }
 

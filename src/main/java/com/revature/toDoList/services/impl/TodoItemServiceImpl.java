@@ -34,6 +34,8 @@ public class TodoItemServiceImpl implements TodoItemService {
     private final TodoItemMapper mapper;
     private final UserRepository userRepository;
 
+    private final SubtaskService subtaskService;
+
     @Override
     public TodoItemResponse createToDoItem(TodoItemCreateRequest todoItem) {
 
@@ -77,6 +79,17 @@ public class TodoItemServiceImpl implements TodoItemService {
                 .toList();
     }
 
+    @Override
+    public List<TodoItemResponse> getAllTodoItems() {
+
+        List<TodoItem> list = todoItemRepository.findAll();
+        if(list.isEmpty()) {
+            throw new TodoIdNotFoundException("No item found");
+        }
+        return list.stream().map(mapper::toResponse).toList();
+
+    }
+
 
     @Override
     public TodoItemResponse getByTodoId(long todoId) {
@@ -93,7 +106,17 @@ public class TodoItemServiceImpl implements TodoItemService {
         TodoItem item = todoItemRepository.findById(req.getId()).orElseThrow(
                 () -> new TodoIdNotFoundException("No to do item found"));
 
-        log.info("To do ID FOUND" + req.getId());
+        log.info("To do id found {} " , req.getId());
+
+        List<SubTaskResponse> subs = subtaskService.getAllSubTasksByToDoId(item.getTodoId());
+
+        if(req.getCompleted()){
+            for(SubTaskResponse s : subs){
+                if(!s.completed()){
+                    throw new SubTaskNotClosedException("one or more subtask are not closed yet");
+                }
+            }
+        }
 
         item.setTitle(req.getTitle());
         item.setCompleted(req.getCompleted());
@@ -101,7 +124,7 @@ public class TodoItemServiceImpl implements TodoItemService {
         item.setUpdatedAt(LocalDateTime.now());
         item.setDueDate(req.getDueDate());
 
-        log.info("UPDATED ITEM" + item.getDueDate());
+        log.info("updated item: {}", item.getTitle());
         todoItemRepository.save(item);
 
         return mapper.toResponse(item);

@@ -21,4 +21,6 @@ public interface TodoItemService {
     TodoItemResponse reopenTodoItem(long todoId);
 
     List<TodoItemResponse> getToDoItemByUsername(String username);
+
+    List<TodoItemResponse> getAllTodoItems();
 }

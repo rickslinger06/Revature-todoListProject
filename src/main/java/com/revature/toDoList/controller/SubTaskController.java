@@ -27,9 +27,8 @@ public class SubTaskController {
     }
 
     @PutMapping("/user/task/update/{subId}")
-    public ResponseEntity<SubTaskResponse> updateSubTask(@PathVariable long subId,
-                                                         @Valid @RequestBody SubTaskCreateRequest subTaskCreateRequest) {
-        SubTaskResponse subTaskResponse = subtaskService.updateSubTask(subId, subTaskCreateRequest);
+    public ResponseEntity<SubTaskResponse> closeSubTask(@PathVariable long subId) {
+        SubTaskResponse subTaskResponse = subtaskService.closeSubTask(subId);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(subTaskResponse);
 

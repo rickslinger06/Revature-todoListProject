@@ -36,5 +36,5 @@ management:
   endpoints:
     web:
       exposure:
-        include: metrics,health
+        include: "*"
 
