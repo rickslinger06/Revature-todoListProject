@@ -37,6 +37,18 @@ public class GlobalExceptionHandler {
 
     }
 
+    @ExceptionHandler(InvalidPasswordException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidPasswordException(InvalidPasswordException ex, HttpServletRequest req){
+
+        ErrorResponse error = new ErrorResponse();
+        error.setLocalDateTime(LocalDateTime.now());
+        error.setMessage(ex.getMessage());
+        error.setPath(req.getRequestURI());
+
+        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+
+    }
+
     @ExceptionHandler(UserAuthenticationException.class)
     public ResponseEntity<ErrorResponse> handleUserAuth(UserAuthenticationException ex, HttpServletRequest req){
 
