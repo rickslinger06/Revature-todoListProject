@@ -16,8 +16,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-02-21T18:17:31-0600",
-    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 21.0.10 (Microsoft)"
+    date = "2026-02-24T15:35:05-0600",
+    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 21.0.10 (Oracle Corporation)"
 )
 @Component
 public class TodoItemMapperImpl implements TodoItemMapper {

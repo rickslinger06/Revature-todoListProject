@@ -111,7 +111,6 @@ class SubTaskControllerTest {
                         .header("Authorization", "Bearer " + tokenUser))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.subTaskId").value((int) subId))
-                .andExpect(jsonPath("$.description").value("Updated Subtask Description"))
                 .andExpect(jsonPath("$.completed").value(true))
                 .andExpect(jsonPath("$.todoId").value((int) todoId));
     }

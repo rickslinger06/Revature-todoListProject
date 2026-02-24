@@ -43,5 +43,7 @@ com/revature/toDoList/exception/GlobalExceptionHandler.class
 com/revature/toDoList/repository/SubTaskRepository.class
 com/revature/toDoList/repository/UserRepository.class
 com/revature/toDoList/dto/mapper/TodoItemMapperImpl.class
+com/revature/toDoList/exception/InvalidPasswordException.class
 com/revature/toDoList/services/impl/SubtaskServiceImpl.class
+com/revature/toDoList/dto/request/ResetPasswordRequest.class
 com/revature/toDoList/services/SubtaskService.class

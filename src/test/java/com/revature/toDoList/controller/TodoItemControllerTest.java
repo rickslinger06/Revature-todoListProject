@@ -209,7 +209,7 @@ class TodoItemControllerTest {
     }
 
     @Test
-    void adminCloseItem_success() throws Exception {
+    void closeItem_success() throws Exception {
         // Arrange: attach 2 completed subtasks to the existing todoId
         TodoItem item = todoItemRepository.findById(todoId).orElseThrow();
 
@@ -227,9 +227,9 @@ class TodoItemControllerTest {
         subTaskRepository.save(s2);
 
         // Act + Assert
-        mockMvc.perform(patch("/api/v1/admin/item/{todoId}/close", todoId)
+        mockMvc.perform(patch("/api/v1/user/item/{todoId}/close", todoId)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "Bearer " + tokenAdmin))
+                        .header("Authorization", "Bearer " + tokenUser))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.todoId").value((int) todoId))
                 .andExpect(jsonPath("$.closed").value(true));
@@ -248,7 +248,7 @@ class TodoItemControllerTest {
         subTaskRepository.save(open);
 
         // Act + Assert
-        mockMvc.perform(patch("/api/v1/admin/item/{todoId}/close", todoId)
+        mockMvc.perform(patch("/api/v1/user/item/{todoId}/close", todoId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + tokenAdmin))
 
@@ -263,7 +263,7 @@ class TodoItemControllerTest {
         todoItemRepository.save(item);
 
         // Act + Assert
-        mockMvc.perform(patch("/api/v1/admin/item/{todoId}/reopen", todoId)
+        mockMvc.perform(patch("/api/v1/user/item/{todoId}/reopen", todoId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + tokenAdmin))
                 .andExpect(status().isOk())
