@@ -22,13 +22,6 @@ public class UserMapper {
         dto.setEmail(user.getEmail());
         dto.setRole(user.getRole());
 
-//        UserDTO dto = UserDTO.builder()
-//                .userId(user.getUserId())
-//                .username(user.getUsername())
-//                .email(user.getEmail())
-//                .role(user.getRole())
-//                .build();
-
         return dto;
     }
 }
