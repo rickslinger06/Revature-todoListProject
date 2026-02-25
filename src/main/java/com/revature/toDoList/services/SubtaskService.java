@@ -15,5 +15,5 @@ public interface SubtaskService {
     SubTaskResponse createSubTask(long todoId, SubTaskCreateRequest subTaskCreateRequest);
 
 
-
+    SubTaskResponse editSubTask(long subId, SubTaskCreateRequest updateRequest);
 }

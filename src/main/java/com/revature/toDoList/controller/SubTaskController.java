@@ -31,7 +31,13 @@ public class SubTaskController {
         SubTaskResponse subTaskResponse = subtaskService.closeSubTask(subId);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(subTaskResponse);
+    }
 
+    @PatchMapping("user/task/edit/{subId}")
+    public ResponseEntity<SubTaskResponse> editSubTask(@PathVariable long subId, @RequestBody SubTaskCreateRequest updateRequest ) {
+        SubTaskResponse subTaskResponse = subtaskService.editSubTask(subId, updateRequest);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(subTaskResponse);
     }
 
     @GetMapping("/user/task/{subId}")

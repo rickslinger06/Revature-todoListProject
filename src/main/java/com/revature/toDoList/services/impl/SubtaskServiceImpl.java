@@ -50,6 +50,18 @@ public class SubtaskServiceImpl implements SubtaskService {
         return mapper.toResponse(savedTask);
     }
 
+    @Override
+    public SubTaskResponse editSubTask(long subId, SubTaskCreateRequest updateRequest) {
+
+        SubTask task = subTaskRepository.findById(subId).orElseThrow(
+                () -> new SubTaskNotFoundException("Subtask Not found id: " + subId)
+        );
+        task.setDescription(updateRequest.description());
+        task.setCreatedAt(LocalDateTime.now());
+
+        return mapper.toResponse(task);
+    }
+
 
     @Override
     public SubTaskResponse getBySubTaskId(long id) {
