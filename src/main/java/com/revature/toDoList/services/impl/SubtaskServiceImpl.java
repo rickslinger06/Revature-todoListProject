@@ -57,8 +57,9 @@ public class SubtaskServiceImpl implements SubtaskService {
                 () -> new SubTaskNotFoundException("Subtask Not found id: " + subId)
         );
         task.setDescription(updateRequest.description());
-        task.setCreatedAt(LocalDateTime.now());
-
+        task.setUpdatedAt(LocalDateTime.now());
+        subTaskRepository.save(task);
+        log.info("updated subTask id {} new description {}", subId ,updateRequest.description());
         return mapper.toResponse(task);
     }
 

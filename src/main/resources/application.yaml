@@ -11,9 +11,8 @@ spring:
 #    password: ${DB_PASSWORD}
 #    driver-class-name: com.mysql.cj.jdbc.Driver
   datasource:
-    url: jdbc:sqlite:./todoListDB
+    url: jdbc:sqlite:/data/todoListDB
     driver-class-name: org.sqlite.JDBC
-
 
   jpa:
     hibernate:
