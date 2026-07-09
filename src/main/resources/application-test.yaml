@@ -18,3 +18,7 @@ jwt:
   expirationMs: 3600000  # 1 hour
   issuer: "localhost"
   audience: "todo-api"
+
+app:
+  todo:
+    client: payment-service
